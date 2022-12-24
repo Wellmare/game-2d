@@ -18,15 +18,17 @@ export default class Level {
 		private readonly finishCoords: ICoords,
 		private readonly spawnCoords: ICoords,
 		private readonly onSubmit: (instance: Level) => void,
-		public levelNumber: number
+		public levelNumber: number,
+		private readonly onRetry: (instance: Level) => void
 	) {
 		this.currentCoords = spawnCoords;
 		this.init();
+		
 	}
 
 	init = (): void => {
 		this.createField();
-		document.querySelector('#current-level')!.textContent =
+		document.querySelector(Selectors.CURRENT_LEVEL_SPAN)!.textContent =
 			this.levelNumber.toString();
 
 		this.controls = new Controls(
@@ -57,8 +59,6 @@ export default class Level {
 			this.gameCells.push(rowCells);
 			gameNode.appendChild(rowEl);
 		}
-
-		console.log(this.gameCells);
 	};
 
 	render = (): void => {
@@ -76,7 +76,7 @@ export default class Level {
 			}
 		}
 	};
-	
+
 	finish = (): void => {
 		finishModalNode.querySelector(
 			FinishModalSelectors.LEVEL_SPAN
@@ -89,6 +89,15 @@ export default class Level {
 				this.destroyLevel();
 				this.onSubmit(this);
 			});
+
+		finishModalNode
+			.querySelector(FinishModalSelectors.RETRY_BTN)!
+			.addEventListener(`click`, () => {
+				finishModal.hide();
+				this.destroyLevel();
+				this.onRetry(this);
+			});
+
 		this.isFinished = true;
 		finishModal.show();
 	};
