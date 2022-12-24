@@ -1,3 +1,4 @@
+import { Cell } from './Cell';
 import { Controls } from './Controls';
 import { finishModal, finishModalNode } from './index';
 
@@ -6,7 +7,7 @@ import { FinishModalSelectors, ICoords, Selectors } from './types';
 const gameNode = document.querySelector(Selectors.GAME)!;
 
 export default class Level {
-	private readonly gameCells: Array<Array<HTMLDivElement>> = [];
+	private readonly gameCells: Array<Array<Cell>> = [];
 	private readonly currentCoords: ICoords;
 	private isFinished = false;
 	private controls!: Controls;
@@ -41,27 +42,17 @@ export default class Level {
 			const rowEl = document.createElement('div');
 
 			rowEl.className = 'game-row';
-			const rowCells: Array<HTMLDivElement> = [];
+			const rowCells: Array<Cell> = [];
 
 			for (let cell = 0; cell < this.cells; cell++) {
-				const cellEl = document.createElement('div');
+				const cellInstanse = new Cell(
+					{ y: row, x: cell },
+					this.currentCoords,
+					this.finishCoords
+				);
 
-				cellEl.classList.add('game-cell');
-
-				const isFinish =
-					this.finishCoords.y === row && this.finishCoords.x === cell;
-				const isSelected =
-					this.spawnCoords.y === row && this.spawnCoords.x === cell;
-
-				if (isFinish) {
-					cellEl.classList.add('finish');
-				}
-				if (isSelected) {
-					cellEl.classList.add('player');
-				}
-
-				rowCells.push(cellEl);
-				rowEl.appendChild(cellEl);
+				rowCells.push(cellInstanse);
+				rowEl.appendChild(cellInstanse.render());
 			}
 			this.gameCells.push(rowCells);
 			gameNode.appendChild(rowEl);
@@ -71,15 +62,9 @@ export default class Level {
 	};
 
 	render = (): void => {
-		this.clearField();
-		this.gameCells.forEach((row, rowIndex) => {
-			row.forEach((cell, cellIndex) => {
-				if (
-					this.currentCoords.y === rowIndex &&
-					this.currentCoords.x === cellIndex
-				) {
-					cell.classList.add('player');
-				}
+		this.gameCells.forEach((row) => {
+			row.forEach((cell) => {
+				cell.render();
 			});
 		});
 		if (
@@ -91,15 +76,7 @@ export default class Level {
 			}
 		}
 	};
-
-	clearField = (): void => {
-		this.gameCells.forEach((row) => {
-			row.forEach((cell) => {
-				cell.classList.remove('player');
-			});
-		});
-	};
-
+	
 	finish = (): void => {
 		finishModalNode.querySelector(
 			FinishModalSelectors.LEVEL_SPAN
