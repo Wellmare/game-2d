@@ -18,10 +18,14 @@ export const enum Selectors {
 }
 
 export const enum FinishModalSelectors {
-	FINISH_MODAL = '#finish-modal',
+	MODAL = '#finish-modal',
 	LEVEL_SPAN = '#level',
 	RETRY_BTN = '#retry-btn',
 	SUBMIT_BTN = '#submit-btn'
+}
+
+export const enum EndGameModalSelectors {
+	MODAL = '#game-end-modal'
 }
 
 export const enum ControlsSelectors {
