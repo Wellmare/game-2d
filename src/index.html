@@ -49,28 +49,25 @@
 				class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
 				role="document"
 			>
-				<div class="modal-content ">
+				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="levelTitleId">
 							Ты завершил <span id="level">1</span> уровень
 						</h5>
-						<!-- <button
-							type="button"
-							class="btn-close"
-							data-bs-dismiss="modal"
-							aria-label="Close"
-						></button> -->
 					</div>
 					<div class="modal-body">Начать следующий уровень?</div>
 					<div class="modal-footer">
-						<!-- <button
+						<button
 							type="button"
-							class="btn btn-secondary"
-							data-bs-dismiss="modal"
+							class="btn btn-primary"
+							id="retry-btn"
 						>
-							Нет
-						</button> -->
-						<button type="button" class="btn btn-primary" id="submit">
+							Заново</button
+						><button
+							type="button"
+							class="btn btn-primary"
+							id="submit-btn"
+						>
 							Да
 						</button>
 					</div>
@@ -78,7 +75,7 @@
 			</div>
 		</div>
 
-        <div
+		<div
 			class="modal fade"
 			id="game-end-modal"
 			tabindex="-1"
@@ -92,19 +89,13 @@
 				class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
 				role="document"
 			>
-				<div class="modal-content ">
+				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="finishTitleId">
 							Уровни закончились!
 						</h5>
-						<!-- <button
-							type="button"
-							class="btn-close"
-							data-bs-dismiss="modal"
-							aria-label="Close"
-						></button> -->
 					</div>
-					<div class="modal-body">Поздравляю ты прошёл игру!</div>
+					<div class="modal-body">Поздравляю, ты прошёл игру!</div>
 					<div class="modal-footer">
 						<button
 							type="button"
@@ -113,9 +104,6 @@
 						>
 							Круто
 						</button>
-						<!-- <button type="button" class="btn btn-primary" id="submit">
-							Круто
-						</button> -->
 					</div>
 				</div>
 			</div>
