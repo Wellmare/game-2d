@@ -22,7 +22,7 @@ export default class Level {
 		this.init();
 	}
 
-	createField = async (): Promise<void> => {
+	createField = (): void => {
 		for (let row = 0; row < this.rows; row++) {
 			// row
 			const rowEl = document.createElement('div');
