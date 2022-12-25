@@ -22,12 +22,13 @@ export const levels: ILevel[] = [
 	{
 		level: 3,
 		size: {
-			rows: 10,
-			cells: 10
+			rows: 7,
+			cells: 7
 		},
-		spawnCoords: { y: 4, x: 4 },
-		finishCoords: { y: 9, x: 8 }
-	},{
+		spawnCoords: { y: 0, x: 0 },
+		finishCoords: { y: 3, x: 5 }
+	},
+	{
 		level: 4,
 		size: {
 			rows: 3,
@@ -48,10 +49,46 @@ export const levels: ILevel[] = [
 	{
 		level: 6,
 		size: {
-			rows: 10,
-			cells: 10
+			rows: 3,
+			cells: 5
 		},
-		spawnCoords: { y: 4, x: 4 },
-		finishCoords: { y: 9, x: 8 }
+		spawnCoords: { y: 0, x: 0 },
+		finishCoords: { y: 2, x: 4 }
 	},
+	{
+		level: 7,
+		size: {
+			rows: 4,
+			cells: 6
+		},
+		spawnCoords: { y: 0, x: 0 },
+		finishCoords: { y: 3, x: 1 }
+	},
+	{
+		level: 8,
+		size: {
+			rows: 7,
+			cells: 7
+		},
+		spawnCoords: { y: 0, x: 0 },
+		finishCoords: { y: 3, x: 5 }
+	},
+	{
+		level: 9,
+		size: {
+			rows: 3,
+			cells: 5
+		},
+		spawnCoords: { y: 0, x: 0 },
+		finishCoords: { y: 2, x: 4 }
+	},
+	{
+		level: 10,
+		size: {
+			rows: 4,
+			cells: 6
+		},
+		spawnCoords: { y: 0, x: 0 },
+		finishCoords: { y: 3, x: 1 }
+	}
 ];
