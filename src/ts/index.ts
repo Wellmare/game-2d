@@ -1,19 +1,22 @@
 import { Modal } from 'bootstrap';
 
 import '../css/index.css';
+import { init } from './init';
 import Level from './Level';
 import { levels } from './levels';
 import { EndGameModalSelectors, FinishModalSelectors } from './types';
 
-export const finishModalNode = document.querySelector(FinishModalSelectors.MODAL)!;
+export const finishModalNode = document.querySelector(
+	FinishModalSelectors.MODAL
+)!;
 export const finishModal = new Modal(FinishModalSelectors.MODAL);
 const endGameModal = new Modal(EndGameModalSelectors.MODAL);
 
 let levelIndex = 0;
 
-renderCurrentLevel();
+init();
 
-function renderCurrentLevel(): void {
+export function renderCurrentLevel(): void {
 	const currentLevel = levels[levelIndex];
 
 	if (currentLevel !== undefined) {
