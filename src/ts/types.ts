@@ -14,7 +14,8 @@ export interface ILevel {
 }
 
 export const enum Selectors {
-	CURRENT_LEVEL_SPAN = '#current-level'
+	CURRENT_LEVEL_SPAN = '#current-level',
+	GAME = '#game'
 }
 
 export const enum FinishModalSelectors {
