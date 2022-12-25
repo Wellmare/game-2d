@@ -37,3 +37,10 @@ export const enum ControlsSelectors {
 	LEFT_BUTTON = '#left-btn',
 	RIGHT_BUTTON = '#right-btn'
 }
+
+export const enum Sides {
+	UP = 'up',
+	DOWN = 'DOWN',
+	LEFT = 'LEFT',
+	RIGHT = 'RIGHT',
+}

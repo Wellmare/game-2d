@@ -1,3 +1,4 @@
+import { Controls } from './Controls';
 import { finishModal, finishModalNode } from './index';
 
 import { FinishModalSelectors, ICoords, Selectors } from './types';
@@ -8,6 +9,7 @@ export default class Level {
 	private readonly gameCells: Array<NodeListOf<HTMLDivElement>> = [];
 	private readonly currentCoords: ICoords;
 	private isFinished = false;
+	private controls!: Controls
 
 	constructor(
 		private readonly rows: number,
@@ -56,42 +58,9 @@ export default class Level {
 		document.querySelector('#current-level')!.textContent =
 			this.levelNumber.toString();
 
-		document.addEventListener(`keydown`, this.onKeyDown);
+		this.controls = new Controls(this.rows, this.cells, this.currentCoords, this.render)
 	};
 
-	onKeyDown = (e: KeyboardEvent): void => {
-		const MAX_ROW_INDEX = this.rows - 1;
-		const MAX_CELL_INDEX = this.cells - 1;
-
-		if (this.isFinished) return;
-
-		switch (e.key) {
-			case 'ArrowUp':
-				if (this.currentCoords.y - 1 >= 0) {
-					this.currentCoords.y -= 1;
-				}
-				this.render();
-				break;
-			case 'ArrowDown':
-				if (this.currentCoords.y + 1 <= MAX_ROW_INDEX) {
-					this.currentCoords.y += 1;
-				}
-				this.render();
-				break;
-			case 'ArrowLeft':
-				if (this.currentCoords.x - 1 >= 0) {
-					this.currentCoords.x -= 1;
-				}
-				this.render();
-				break;
-			case 'ArrowRight':
-				if (this.currentCoords.x + 1 <= MAX_CELL_INDEX) {
-					this.currentCoords.x += 1;
-				}
-				this.render();
-				break;
-		}
-	};
 
 	render = (): void => {
 		this.clearField();
@@ -141,6 +110,6 @@ export default class Level {
 
 	destroyLevel = (): void => {
 		gameNode.innerHTML = ``;
-		document.removeEventListener(`keydown`, this.onKeyDown);
+		this.controls.disableControls()
 	};
 }
