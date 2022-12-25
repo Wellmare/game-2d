@@ -131,9 +131,9 @@ export default class Level {
 		finishModalNode
 			.querySelector(FinishModalSelectors.SUBMIT_BTN)!
 			.addEventListener(`click`, () => {
-				this.onSubmit(this);
 				finishModal.hide();
 				this.destroyLevel();
+				this.onSubmit(this);
 			});
 		this.isFinished = true;
 		finishModal.show();
