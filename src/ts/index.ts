@@ -3,26 +3,26 @@ import { Modal } from 'bootstrap';
 import '../css/index.css';
 import Level from './Level';
 import { levels } from './levels';
+import { EndGameModalSelectors, FinishModalSelectors } from './types';
 
-export const modalNode = document.querySelector('#finish-modal')!;
-export const finishModal = new Modal('#finish-modal');
+export const finishModalNode = document.querySelector(FinishModalSelectors.MODAL)!;
+export const finishModal = new Modal(FinishModalSelectors.MODAL);
+const endGameModal = new Modal(EndGameModalSelectors.MODAL);
 
 let levelIndex = 0;
-
-let prevLevel: Level;
 
 renderCurrentLevel();
 
 function renderCurrentLevel(): void {
-	prevLevel?.destroyLevel();
 	const currentLevel = levels[levelIndex];
+
 	if (currentLevel !== undefined) {
 		const rows = currentLevel.size.rows;
 		const cells = currentLevel.size.cells;
 		const spawnCoords = currentLevel.spawnCoords;
 		const finishCoords = currentLevel.finishCoords;
 
-		prevLevel = new Level(
+		new Level(
 			rows,
 			cells,
 			finishCoords,
@@ -31,7 +31,7 @@ function renderCurrentLevel(): void {
 			currentLevel.level
 		);
 	} else {
-		new Modal('#game-end-modal').show();
+		endGameModal.show();
 	}
 }
 

@@ -1,8 +1,8 @@
-import { finishModal, modalNode } from './index';
+import { finishModal, finishModalNode } from './index';
 
-import { ICoords } from './types';
+import { FinishModalSelectors, ICoords, Selectors } from './types';
 
-const gameNode = document.querySelector('#game')!;
+const gameNode = document.querySelector(Selectors.GAME)!;
 
 export default class Level {
 	private readonly gameCells: Array<NodeListOf<HTMLDivElement>> = [];
@@ -124,12 +124,17 @@ export default class Level {
 	};
 
 	finish = (): void => {
-		modalNode.querySelector('#level')!.textContent =
-			this.levelNumber.toString();
-		modalNode.querySelector('#submit')!.addEventListener(`click`, () => {
-			this.onSubmit(this);
-			finishModal.hide();
-		});
+		finishModalNode.querySelector(
+			FinishModalSelectors.LEVEL_SPAN
+		)!.textContent = this.levelNumber.toString();
+
+		finishModalNode
+			.querySelector(FinishModalSelectors.SUBMIT_BTN)!
+			.addEventListener(`click`, () => {
+				this.onSubmit(this);
+				finishModal.hide();
+				this.destroyLevel();
+			});
 		this.isFinished = true;
 		finishModal.show();
 	};
