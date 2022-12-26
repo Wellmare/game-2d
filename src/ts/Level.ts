@@ -1,8 +1,13 @@
 import { Cell } from './Cell';
 import { Controls } from './Controls';
-import { finishModal, finishModalNode } from './index';
+import { finishModalNode, finishModal } from './Game';
 
-import { FinishModalSelectors, ICoords, Selectors } from './types';
+import {
+	FinishModalSelectors,
+	ICoords,
+	ISetLevelProps,
+	Selectors
+} from './types';
 import { equateCoords } from './utils';
 
 export const gameNode = document.querySelector(Selectors.GAME)!;
@@ -24,30 +29,14 @@ export default class Level {
 	static onSubmit: () => void;
 	static onRetry: () => void;
 
-	// constructor(
-	// 	private readonly rows: number,
-	// 	private readonly cells: number,
-	// 	private readonly finishCoords: ICoords,
-	// 	private readonly spawnCoords: ICoords,
-	// 	private readonly onSubmit: (instance: Level) => void,
-	// 	public levelNumber: number,
-	// 	private readonly onRetry: (instance: Level) => void
-	// ) {
-	// this.currentCoords.x = this.spawnCoords.x;
-	// this.currentCoords.y = this.spawnCoords.y;
-	// this.currentCoords = Object.assign({}, this.spawnCoords)
-	// this.init();
-	// }
-
-	static setLevel = (
-		levelNumber: number,
-		rows: number,
-		cells: number,
-		finishCoords: ICoords,
-		spawnCoords: ICoords,
-		onSubmit: () => void
-		// onRetry: () => {}
-	): void => {
+	static setLevel = ({
+		cells,
+		finishCoords,
+		levelNumber,
+		onSubmit,
+		rows,
+		spawnCoords
+	}: ISetLevelProps): void => {
 		Level.levelNumber = levelNumber;
 		Level.rows = rows;
 		Level.cells = cells;
@@ -124,14 +113,4 @@ export default class Level {
 		gameNode.innerHTML = ``;
 		Level.controls.disableControls();
 	};
-
-	// retry = () => {
-	// 	// this.render()
-	// 	this.destroyLevel()
-	// 	this.isFinished = false
-	// 	this.init()
-	// 	this.currentCoords.x = this.spawnCoords.x
-	// 	this.currentCoords.y = this.spawnCoords.y
-	// 	this.render()
-	// }
 }

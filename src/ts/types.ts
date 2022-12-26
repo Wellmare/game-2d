@@ -52,3 +52,11 @@ export const enum CellTypes {
 	FINISH,
 	WALL
 }
+export interface ISetLevelProps {
+	levelNumber: number;
+	rows: number;
+	cells: number;
+	finishCoords: ICoords;
+	spawnCoords: ICoords;
+	onSubmit: () => void;
+}
