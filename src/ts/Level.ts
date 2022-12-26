@@ -3,6 +3,8 @@ import { Controls } from './Controls';
 import { finishModalNode, finishModal } from './Game';
 
 import {
+	CellRole,
+	Field,
 	FinishModalSelectors,
 	ICoords,
 	ISetLevelProps,
@@ -14,39 +16,36 @@ export const gameNode = document.querySelector(Selectors.GAME)!;
 
 export default class Level {
 	static readonly gameCells: Array<Array<Cell>> = [];
-	static currentCoords: ICoords;
+	static playerCoords: ICoords;
 
 	static isFinished = false;
 	static controls: Controls;
 
 	static levelNumber: number;
-	static rows: number;
-	static cells: number;
+	// static rows: number;
+	// static cells: number;
 
-	static finishCoords: ICoords;
-	static spawnCoords: ICoords;
+	// static finishCoords: ICoords;
+	// static spawnCoords: ICoords;
 
 	static onSubmit: () => void;
-	static onRetry: () => void;
+	// static onRetry: () => void;
+
+	static field: Field;
 
 	static setLevel = ({
-		cells,
-		finishCoords,
 		levelNumber,
-		onSubmit,
-		rows,
-		spawnCoords
+		playerCoords,
+		field,
+		onSubmit
 	}: ISetLevelProps): void => {
 		Level.levelNumber = levelNumber;
-		Level.rows = rows;
-		Level.cells = cells;
-		Level.finishCoords = finishCoords;
-		Level.spawnCoords = spawnCoords;
-		Level.onSubmit = onSubmit;
-		Level.currentCoords = Object.assign({}, spawnCoords);
-		// Level.onRetry = onRetry;
+		Level.playerCoords = playerCoords;
+		Level.field = field;
+		Level.onSubmit = onSubmit
 
 		this.init();
+		console.log(levelNumber);
 	};
 
 	static init = (): void => {
@@ -58,25 +57,24 @@ export default class Level {
 			Level.levelNumber.toString();
 
 		Level.controls = new Controls(
-			Level.rows,
-			Level.cells,
-			Level.currentCoords,
-			Level.render
+			Level.playerCoords,
+			Level.render,
+			Level.field
 		);
 	};
 
 	static createField = (): void => {
-		for (let row = 0; row < Level.rows; row++) {
+		for (let row = 0; row < Level.field.length; row++) {
 			const rowEl = document.createElement('div');
 
 			rowEl.className = 'game-row';
 			const rowCells: Array<Cell> = [];
 
-			for (let cell = 0; cell < Level.cells; cell++) {
+			for (let cell = 0; cell < Level.field[row].length; cell++) {
 				const cellInstanse = new Cell(
 					{ y: row, x: cell },
-					Level.currentCoords,
-					Level.finishCoords
+					this.playerCoords,
+					Level.field[row][cell].role
 				);
 
 				rowCells.push(cellInstanse);
@@ -93,7 +91,13 @@ export default class Level {
 				cell.render();
 			});
 		});
-		if (equateCoords(Level.currentCoords, Level.finishCoords)) {
+		if (
+			Cell.getCellTypeByCoords(
+				this.playerCoords.y,
+				this.playerCoords.x,
+				this.field
+			) === CellRole.FINISH
+		) {
 			if (!Level.isFinished) {
 				Level.finish();
 			}

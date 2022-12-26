@@ -3,14 +3,17 @@ export interface ICoords {
 	y: number;
 }
 
+export type Field = Array<Array<{role: CellRole }>>;
+
 export interface ILevel {
 	level: number;
-	size: {
-		rows: number;
-		cells: number;
-	};
-	spawnCoords: ICoords;
-	finishCoords: ICoords;
+	// size: {
+	// 	rows: number;
+	// 	cells: number;
+	// };
+	// spawnCoords: ICoords;
+	// finishCoords: ICoords;
+	field: Field;
 }
 
 export const enum Selectors {
@@ -46,17 +49,19 @@ export const enum Sides {
 	RIGHT = 'RIGHT'
 }
 
-export const enum CellTypes {
-	EMPTY,
-	PLAYER,
-	FINISH,
-	WALL
+export const enum CellRole {
+	EMPTY = 'empty',
+	PLAYER = 'player',
+	FINISH = 'finish',
+	WALL = 'wall'
 }
 export interface ISetLevelProps {
 	levelNumber: number;
-	rows: number;
-	cells: number;
-	finishCoords: ICoords;
-	spawnCoords: ICoords;
+	// rows: number;
+	// cells: number;
+	// finishCoords: ICoords;
+	// spawnCoords: ICoords;
 	onSubmit: () => void;
+	playerCoords: ICoords;
+	field: Field;
 }

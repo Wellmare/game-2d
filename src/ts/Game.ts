@@ -1,8 +1,11 @@
 import { Modal } from 'bootstrap';
+import { Cell } from './Cell';
 import Level from './Level';
 import {
+	CellRole,
 	EndGameModalSelectors,
 	FinishModalSelectors,
+	ICoords,
 	ILevel,
 	Selectors
 } from './types';
@@ -20,26 +23,40 @@ export class Game {
 
 	constructor(private readonly levels: ILevel[]) {}
 
-    start = (): void => {
-        this.renderCurrentLevel()
-    }
+	start = (): void => {
+		this.renderCurrentLevel();
+	};
 
 	renderCurrentLevel = (): void => {
-		this.currentLevel = this.levels[this.currentLevelIndex];
-		const {
-			finishCoords,
-			level,
-			size: { rows, cells },
-			spawnCoords
-		} = this.currentLevel;
-		Level.setLevel({
-			cells,
-			finishCoords,
-			levelNumber: level,
-			onSubmit: this.nextLevel,
-			rows,
-			spawnCoords
-		});
+		try {
+			this.currentLevel = this.levels[this.currentLevelIndex];
+
+			if (this.currentLevel) {
+				const { level, field } = this.currentLevel;
+
+				let playerCoords: ICoords = { x: 0, y: 0 };
+				const playerCoordsArray = Cell.getCellsCoordsByRole(
+					field,
+					CellRole.PLAYER
+				);
+				if (playerCoordsArray && playerCoordsArray?.length !== 0) {
+					playerCoords = playerCoordsArray[0];
+				}
+				// if (!playerCoords)
+
+				Level.setLevel({
+					levelNumber: level,
+					onSubmit: this.nextLevel,
+					playerCoords,
+					field
+				});
+			} else {
+                throw new Error('Level not defined')
+            }
+		} catch (e) {
+            console.log('end');
+            this.onEndGame()
+        }
 	};
 
 	nextLevel = (): void => {

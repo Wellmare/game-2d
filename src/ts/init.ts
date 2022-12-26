@@ -24,6 +24,8 @@ export const init = () => {
 		.addEventListener(`click`, () => {
 			finishModal.hide();
 			// Level.destroyLevel();
+			console.log('submit');
+			debugger;
 			Level.onSubmit();
 		});
 	finishModalNode
@@ -31,6 +33,6 @@ export const init = () => {
 		.addEventListener(`click`, () => {
 			finishModal.hide();
 			// Level.destroyLevel();
-			game.renderCurrentLevel()
+			game.renderCurrentLevel();
 		});
 };

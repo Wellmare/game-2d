@@ -1,24 +1,35 @@
+import { Cell } from './Cell';
 import { isMobile } from './init';
-import { ControlsSelectors, ICoords, Sides } from './types';
+import { CellRole, ControlsSelectors, Field, ICoords, Sides } from './types';
 
 export class Controls {
 	private isDisabled = false;
 
 	constructor(
-		private readonly rows: number,
-		private readonly cells: number,
+		// private readonly rows: number,
+		// private readonly cells: number,
 		private readonly currentCoords: ICoords,
-		private readonly render: () => void
+		private readonly render: () => void,
+		private readonly field: Field
 	) {
 		if (isMobile) {
-            document.querySelector(ControlsSelectors.CONTROLS_HINT)!.classList.add('d-none');
-            document.querySelector(ControlsSelectors.MOBILE_CONTROLS)!.classList.remove('d-none');
+			document
+				.querySelector(ControlsSelectors.CONTROLS_HINT)!
+				.classList.add('d-none');
+			document
+				.querySelector(ControlsSelectors.MOBILE_CONTROLS)!
+				.classList.remove('d-none');
 			this.onMobileInit();
 		} else {
-            document.querySelector(ControlsSelectors.CONTROLS_HINT)!.classList.remove('d-none');
-            document.querySelector(ControlsSelectors.MOBILE_CONTROLS)!.classList.add('d-none');
+			document
+				.querySelector(ControlsSelectors.CONTROLS_HINT)!
+				.classList.remove('d-none');
+			document
+				.querySelector(ControlsSelectors.MOBILE_CONTROLS)!
+				.classList.add('d-none');
 			document.addEventListener('keydown', this.onKeyDown);
 		}
+		console.log(this.field);
 	}
 
 	onKeyDown = (e: KeyboardEvent): void => {
@@ -51,31 +62,43 @@ export class Controls {
 	movePlayer = (side: Sides): void => {
 		if (this.isDisabled) return;
 
-		const MAX_ROW_INDEX = this.rows - 1;
-		const MAX_CELL_INDEX = this.cells - 1;
+		const MAX_ROW_INDEX = this.field.length - 1;
+		const MAX_CELL_INDEX = this.field[0].length - 1;
+
+		const newCoords: ICoords = Object.assign({}, this.currentCoords);
 
 		switch (side) {
 			case Sides.UP:
 				if (this.currentCoords.y - 1 >= 0) {
-					this.currentCoords.y -= 1;
+					newCoords.y -= 1;
 				}
 				break;
 			case Sides.DOWN:
 				if (this.currentCoords.y + 1 <= MAX_ROW_INDEX) {
-					this.currentCoords.y += 1;
+					newCoords.y += 1;
 				}
 				break;
 			case Sides.LEFT:
 				if (this.currentCoords.x - 1 >= 0) {
-					this.currentCoords.x -= 1;
+					newCoords.x -= 1;
 				}
 				break;
 			case Sides.RIGHT:
 				if (this.currentCoords.x + 1 <= MAX_CELL_INDEX) {
-					this.currentCoords.x += 1;
+					newCoords.x += 1;
 				}
 				break;
 		}
+
+		if (
+			Cell.getCellTypeByCoords(newCoords.y, newCoords.x, this.field) ===
+			CellRole.WALL
+		) {
+			return;
+		}
+
+		this.currentCoords.x = newCoords.x;
+		this.currentCoords.y = newCoords.y;
 		this.render();
 	};
 
