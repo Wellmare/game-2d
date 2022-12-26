@@ -24,6 +24,7 @@ export function renderCurrentLevel(): void {
 		const cells = currentLevel.size.cells;
 		const spawnCoords = currentLevel.spawnCoords;
 		const finishCoords = currentLevel.finishCoords;
+		const level = currentLevel.level;
 
 		new Level(
 			rows,
@@ -31,7 +32,8 @@ export function renderCurrentLevel(): void {
 			finishCoords,
 			spawnCoords,
 			nextLevel,
-			currentLevel.level
+			level,
+			retryLevel
 		);
 	} else {
 		endGameModal.show();
@@ -41,6 +43,11 @@ export function renderCurrentLevel(): void {
 function nextLevel(instance: Level): void {
 	if (instance.levelNumber === levelIndex + 1) {
 		levelIndex++;
+		renderCurrentLevel();
+	}
+}
+function retryLevel(instance: Level) {
+	if (instance.levelNumber === levelIndex + 1) {
 		renderCurrentLevel();
 	}
 }

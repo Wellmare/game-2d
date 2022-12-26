@@ -1,3 +1,4 @@
+import { Cell } from './Cell';
 import { Controls } from './Controls';
 import { finishModal, finishModalNode } from './index';
 
@@ -6,10 +7,10 @@ import { FinishModalSelectors, ICoords, Selectors } from './types';
 const gameNode = document.querySelector(Selectors.GAME)!;
 
 export default class Level {
-	private readonly gameCells: Array<NodeListOf<HTMLDivElement>> = [];
+	private readonly gameCells: Array<Array<Cell>> = [];
 	private readonly currentCoords: ICoords;
 	private isFinished = false;
-	private controls!: Controls
+	private controls!: Controls;
 
 	constructor(
 		private readonly rows: number,
@@ -17,61 +18,53 @@ export default class Level {
 		private readonly finishCoords: ICoords,
 		private readonly spawnCoords: ICoords,
 		private readonly onSubmit: (instance: Level) => void,
-		public levelNumber: number
+		public levelNumber: number,
+		private readonly onRetry: (instance: Level) => void
 	) {
 		this.currentCoords = spawnCoords;
-		void this.createField();
 		this.init();
+		
 	}
+
+	init = (): void => {
+		this.createField();
+		document.querySelector(Selectors.CURRENT_LEVEL_SPAN)!.textContent =
+			this.levelNumber.toString();
+
+		this.controls = new Controls(
+			this.rows,
+			this.cells,
+			this.currentCoords,
+			this.render
+		);
+	};
 
 	createField = (): void => {
 		for (let row = 0; row < this.rows; row++) {
-			// row
 			const rowEl = document.createElement('div');
+
 			rowEl.className = 'game-row';
+			const rowCells: Array<Cell> = [];
 
 			for (let cell = 0; cell < this.cells; cell++) {
-				// cell
-				const cellEl = document.createElement('div');
-				cellEl.classList.add('game-cell');
-				if (
-					this.finishCoords.y === row &&
-					this.finishCoords.x === cell
-				) {
-					cellEl.classList.add('finish');
-				}
-				if (this.spawnCoords.y === row && this.spawnCoords.x === cell) {
-					cellEl.classList.add('player');
-				}
-				// rowEl.insertAdjacentElement('afterend', cellEl);
-				rowEl.innerHTML += cellEl.outerHTML;
+				const cellInstanse = new Cell(
+					{ y: row, x: cell },
+					this.currentCoords,
+					this.finishCoords
+				);
+
+				rowCells.push(cellInstanse);
+				rowEl.appendChild(cellInstanse.render());
 			}
-			gameNode.insertAdjacentElement('beforeend', rowEl);
+			this.gameCells.push(rowCells);
+			gameNode.appendChild(rowEl);
 		}
 	};
 
-	init = (): void => {
-		document.querySelectorAll('.game-row').forEach((row) => {
-			this.gameCells.push(row.querySelectorAll('.game-cell'));
-		});
-
-		document.querySelector('#current-level')!.textContent =
-			this.levelNumber.toString();
-
-		this.controls = new Controls(this.rows, this.cells, this.currentCoords, this.render)
-	};
-
-
 	render = (): void => {
-		this.clearField();
-		this.gameCells.forEach((row, rowIndex) => {
-			row.forEach((cell, cellIndex) => {
-				if (
-					this.currentCoords.y === rowIndex &&
-					this.currentCoords.x === cellIndex
-				) {
-					cell.classList.add('player');
-				}
+		this.gameCells.forEach((row) => {
+			row.forEach((cell) => {
+				cell.render();
 			});
 		});
 		if (
@@ -82,14 +75,6 @@ export default class Level {
 				this.finish();
 			}
 		}
-	};
-
-	clearField = (): void => {
-		this.gameCells.forEach((row) => {
-			row.forEach((cell) => {
-				cell.classList.remove('player');
-			});
-		});
 	};
 
 	finish = (): void => {
@@ -104,12 +89,21 @@ export default class Level {
 				this.destroyLevel();
 				this.onSubmit(this);
 			});
+
+		finishModalNode
+			.querySelector(FinishModalSelectors.RETRY_BTN)!
+			.addEventListener(`click`, () => {
+				finishModal.hide();
+				this.destroyLevel();
+				this.onRetry(this);
+			});
+
 		this.isFinished = true;
 		finishModal.show();
 	};
 
 	destroyLevel = (): void => {
 		gameNode.innerHTML = ``;
-		this.controls.disableControls()
+		this.controls.disableControls();
 	};
 }

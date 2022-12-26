@@ -42,5 +42,12 @@ export const enum Sides {
 	UP = 'up',
 	DOWN = 'DOWN',
 	LEFT = 'LEFT',
-	RIGHT = 'RIGHT',
+	RIGHT = 'RIGHT'
+}
+
+export const enum CellTypes {
+	EMPTY,
+	PLAYER,
+	FINISH,
+	WALL
 }
