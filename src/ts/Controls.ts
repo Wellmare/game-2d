@@ -5,10 +5,10 @@ import { CellRole, ControlsSelectors, Field, ICoords, Sides } from './types';
 export class Controls {
 	private isDisabled = false;
 
-	constructor(
+	constructor (
 		// private readonly rows: number,
 		// private readonly cells: number,
-		private readonly currentCoords: ICoords,
+		private readonly playerCoords: ICoords,
 		private readonly render: () => void,
 		private readonly field: Field
 	) {
@@ -44,18 +44,18 @@ export class Controls {
 		}
 
 		switch (key) {
-			case 'ArrowUp':
-				this.movePlayer(Sides.UP);
-				break;
-			case 'ArrowDown':
-				this.movePlayer(Sides.DOWN);
-				break;
-			case 'ArrowLeft':
-				this.movePlayer(Sides.LEFT);
-				break;
-			case 'ArrowRight':
-				this.movePlayer(Sides.RIGHT);
-				break;
+		case 'ArrowUp':
+			this.movePlayer(Sides.UP);
+			break;
+		case 'ArrowDown':
+			this.movePlayer(Sides.DOWN);
+			break;
+		case 'ArrowLeft':
+			this.movePlayer(Sides.LEFT);
+			break;
+		case 'ArrowRight':
+			this.movePlayer(Sides.RIGHT);
+			break;
 		}
 	};
 
@@ -65,29 +65,29 @@ export class Controls {
 		const MAX_ROW_INDEX = this.field.length - 1;
 		const MAX_CELL_INDEX = this.field[0].length - 1;
 
-		const newCoords: ICoords = Object.assign({}, this.currentCoords);
+		const newCoords: ICoords = Object.assign({}, this.playerCoords);
 
 		switch (side) {
-			case Sides.UP:
-				if (this.currentCoords.y - 1 >= 0) {
-					newCoords.y -= 1;
-				}
-				break;
-			case Sides.DOWN:
-				if (this.currentCoords.y + 1 <= MAX_ROW_INDEX) {
-					newCoords.y += 1;
-				}
-				break;
-			case Sides.LEFT:
-				if (this.currentCoords.x - 1 >= 0) {
-					newCoords.x -= 1;
-				}
-				break;
-			case Sides.RIGHT:
-				if (this.currentCoords.x + 1 <= MAX_CELL_INDEX) {
-					newCoords.x += 1;
-				}
-				break;
+		case Sides.UP:
+			if (this.playerCoords.y - 1 >= 0) {
+				newCoords.y -= 1;
+			}
+			break;
+		case Sides.DOWN:
+			if (this.playerCoords.y + 1 <= MAX_ROW_INDEX) {
+				newCoords.y += 1;
+			}
+			break;
+		case Sides.LEFT:
+			if (this.playerCoords.x - 1 >= 0) {
+				newCoords.x -= 1;
+			}
+			break;
+		case Sides.RIGHT:
+			if (this.playerCoords.x + 1 <= MAX_CELL_INDEX) {
+				newCoords.x += 1;
+			}
+			break;
 		}
 
 		if (
@@ -97,24 +97,24 @@ export class Controls {
 			return;
 		}
 
-		this.currentCoords.x = newCoords.x;
-		this.currentCoords.y = newCoords.y;
+		this.playerCoords.x = newCoords.x;
+		this.playerCoords.y = newCoords.y;
 		this.render();
 	};
 
 	onMobileInit = (): void => {
 		document
 			.querySelector(ControlsSelectors.UP_BUTTON)!
-			.addEventListener(`click`, () => this.movePlayer(Sides.UP));
+			.addEventListener('click', () => this.movePlayer(Sides.UP));
 		document
 			.querySelector(ControlsSelectors.DOWN_BUTTON)!
-			.addEventListener(`click`, () => this.movePlayer(Sides.DOWN));
+			.addEventListener('click', () => this.movePlayer(Sides.DOWN));
 		document
 			.querySelector(ControlsSelectors.LEFT_BUTTON)!
-			.addEventListener(`click`, () => this.movePlayer(Sides.LEFT));
+			.addEventListener('click', () => this.movePlayer(Sides.LEFT));
 		document
 			.querySelector(ControlsSelectors.RIGHT_BUTTON)!
-			.addEventListener(`click`, () => this.movePlayer(Sides.RIGHT));
+			.addEventListener('click', () => this.movePlayer(Sides.RIGHT));
 	};
 
 	disableControls = (): void => {

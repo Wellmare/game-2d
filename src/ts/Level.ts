@@ -1,6 +1,6 @@
 import { Cell } from './Cell';
 import { Controls } from './Controls';
-import { finishModalNode, finishModal } from './Game';
+import { finishModal } from './Game';
 
 import {
 	CellRole,
@@ -10,111 +10,95 @@ import {
 	ISetLevelProps,
 	Selectors
 } from './types';
-import { equateCoords } from './utils';
 
+const currentLevelSpan = document.querySelector<HTMLSpanElement>(
+	Selectors.CURRENT_LEVEL_SPAN
+);
+const finishModalLevelSpan = document.querySelector<HTMLSpanElement>(
+	FinishModalSelectors.LEVEL_SPAN
+);
 export const gameNode = document.querySelector(Selectors.GAME)!;
 
-export default class Level {
-	static readonly gameCells: Array<Array<Cell>> = [];
-	static playerCoords: ICoords;
+export let levelName: string;
+export let isFinished = false;
 
-	static isFinished = false;
-	static controls: Controls;
+export const gameCells: Cell[][] = [];
 
-	static levelNumber: number;
-	// static rows: number;
-	// static cells: number;
+export let playerCoords: ICoords = { x: 0, y: 0 };
+export let field: Field;
 
-	// static finishCoords: ICoords;
-	// static spawnCoords: ICoords;
+export let controls: Controls;
+export let onSubmit: () => void;
 
-	static onSubmit: () => void;
-	// static onRetry: () => void;
+export const setLevel = (props: ISetLevelProps): void => {
+	levelName = props.levelName;
+	field = props.field;
+	onSubmit = props.onSubmit;
+	playerCoords = props.playerCoords;
 
-	static field: Field;
+	init();
+};
 
-	static setLevel = ({
-		levelNumber,
-		playerCoords,
-		field,
-		onSubmit
-	}: ISetLevelProps): void => {
-		Level.levelNumber = levelNumber;
-		Level.playerCoords = playerCoords;
-		Level.field = field;
-		Level.onSubmit = onSubmit
+export const init = (): void => {
+	gameNode.innerHTML = '';
+	isFinished = false;
 
-		this.init();
-		console.log(levelNumber);
-	};
+	createField();
+	if (currentLevelSpan !== null) {
+		currentLevelSpan.textContent = levelName;
+	}
 
-	static init = (): void => {
-		gameNode.innerHTML = ``;
-		Level.isFinished = false;
+	controls = new Controls(playerCoords, renderLevel, field);
+};
 
-		Level.createField();
-		document.querySelector(Selectors.CURRENT_LEVEL_SPAN)!.textContent =
-			Level.levelNumber.toString();
+export const createField = (): void => {
+	for (let row = 0; row < field.length; row++) {
+		const rowEl = document.createElement('div');
 
-		Level.controls = new Controls(
-			Level.playerCoords,
-			Level.render,
-			Level.field
-		);
-	};
+		rowEl.className = 'game-row';
+		const rowCells: Cell[] = [];
 
-	static createField = (): void => {
-		for (let row = 0; row < Level.field.length; row++) {
-			const rowEl = document.createElement('div');
+		for (let cell = 0; cell < field[row].length; cell++) {
+			const cellInstanse = new Cell(
+				{ y: row, x: cell },
+				playerCoords,
+				field[row][cell].role
+			);
 
-			rowEl.className = 'game-row';
-			const rowCells: Array<Cell> = [];
-
-			for (let cell = 0; cell < Level.field[row].length; cell++) {
-				const cellInstanse = new Cell(
-					{ y: row, x: cell },
-					this.playerCoords,
-					Level.field[row][cell].role
-				);
-
-				rowCells.push(cellInstanse);
-				rowEl.appendChild(cellInstanse.render());
-			}
-			Level.gameCells.push(rowCells);
-			gameNode.appendChild(rowEl);
+			rowCells.push(cellInstanse);
+			rowEl.appendChild(cellInstanse.render());
 		}
-	};
+		gameCells.push(rowCells);
+		gameNode.appendChild(rowEl);
+	}
+};
 
-	static render = (): void => {
-		Level.gameCells.forEach((row) => {
-			row.forEach((cell) => {
-				cell.render();
-			});
+export const renderLevel = (): void => {
+	gameCells.forEach((row) => {
+		row.forEach((cell) => {
+			cell.render();
 		});
-		if (
-			Cell.getCellTypeByCoords(
-				this.playerCoords.y,
-				this.playerCoords.x,
-				this.field
-			) === CellRole.FINISH
-		) {
-			if (!Level.isFinished) {
-				Level.finish();
-			}
+	});
+	if (
+		Cell.getCellTypeByCoords(playerCoords.y, playerCoords.x, field) ===
+		CellRole.FINISH
+	) {
+		if (isFinished) {
+			finish();
 		}
-	};
+	}
+};
 
-	static finish = (): void => {
-		finishModalNode.querySelector(
-			FinishModalSelectors.LEVEL_SPAN
-		)!.textContent = Level.levelNumber.toString();
+export const finish = (): void => {
+	if (finishModalLevelSpan !== null) {
+		finishModalLevelSpan.textContent = levelName;
+	}
 
-		Level.isFinished = true;
-		finishModal.show();
-	};
+	isFinished = true;
+	finishModal.show();
+};
 
-	static destroyLevel = (): void => {
-		gameNode.innerHTML = ``;
-		Level.controls.disableControls();
-	};
-}
+export const destroyLevel = (): void => {
+	gameNode.innerHTML = '';
+	controls.disableControls();
+};

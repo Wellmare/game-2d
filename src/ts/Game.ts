@@ -1,6 +1,6 @@
 import { Modal } from 'bootstrap';
 import { Cell } from './Cell';
-import Level from './Level';
+import { setLevel } from './Level';
 import {
 	CellRole,
 	EndGameModalSelectors,
@@ -17,11 +17,13 @@ export const finishModal = new Modal(FinishModalSelectors.MODAL);
 export const endGameModal = new Modal(EndGameModalSelectors.MODAL);
 
 export class Game {
-	private currentLevelIndex: number = 0;
+	private currentLevelIndex = 0;
 	private currentLevel!: ILevel;
-	private gameNode: HTMLDivElement = document.querySelector(Selectors.GAME)!;
+	private readonly gameNode: HTMLDivElement = document.querySelector(
+		Selectors.GAME
+	)!;
 
-	constructor(private readonly levels: ILevel[]) {}
+	constructor (private readonly levels: ILevel[]) {}
 
 	start = (): void => {
 		this.renderCurrentLevel();
@@ -31,39 +33,40 @@ export class Game {
 		try {
 			this.currentLevel = this.levels[this.currentLevelIndex];
 
-			if (this.currentLevel) {
-				const { level, field } = this.currentLevel;
+			if (this.currentLevel !== undefined) {
+				const { levelName, field } = this.currentLevel;
 
 				let playerCoords: ICoords = { x: 0, y: 0 };
 				const playerCoordsArray = Cell.getCellsCoordsByRole(
 					field,
 					CellRole.PLAYER
 				);
-				if (playerCoordsArray && playerCoordsArray?.length !== 0) {
+				if (
+					playerCoordsArray != null &&
+					playerCoordsArray?.length !== 0
+				) {
 					playerCoords = playerCoordsArray[0];
 				}
 				// if (!playerCoords)
 
-				Level.setLevel({
-					levelNumber: level,
+				setLevel({
+					levelName,
 					onSubmit: this.nextLevel,
 					playerCoords,
 					field
 				});
 			} else {
-                throw new Error('Level not defined')
-            }
+				throw new Error('Level not defined');
+			}
 		} catch (e) {
-            console.log('end');
-            this.onEndGame()
-        }
+			console.log('end');
+			this.onEndGame();
+		}
 	};
 
 	nextLevel = (): void => {
-		if (Level.levelNumber === this.currentLevelIndex + 1) {
-			this.currentLevelIndex++;
-			this.renderCurrentLevel();
-		}
+		this.currentLevelIndex++;
+		this.renderCurrentLevel();
 	};
 
 	retryGame = (): void => {

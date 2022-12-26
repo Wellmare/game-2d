@@ -3,18 +3,14 @@ import { equateCoords } from './utils';
 
 export class Cell {
 	public cellElement: HTMLDivElement = document.createElement('div');
-	private type: CellRole = CellRole.EMPTY;
+	private readonly type: CellRole = CellRole.EMPTY;
 
 	static playerCoords: ICoords;
 
-	// private isFinish: boolean = false;
-	// private isPlayer: boolean = false;
-	// private isWall: boolean = false;
-
-	constructor(
+	constructor (
 		private readonly cellCoords: ICoords,
-		private playerCoords: ICoords,
-		private role: CellRole
+		private readonly playerCoords: ICoords,
+		private readonly role: CellRole
 	) {
 		this.cellElement.classList.add('game-cell');
 	}
@@ -34,7 +30,7 @@ export class Cell {
 		return this.cellElement;
 	};
 
-	clearClasses = () => {
+	clearClasses = (): void => {
 		this.cellElement.classList.remove('player');
 		this.cellElement.classList.remove('finish');
 	};
@@ -44,9 +40,7 @@ export class Cell {
 		x: number,
 		field: Field
 	): CellRole | null => {
-		// console.log('x: ' + x);
-		// console.log('y: ' + y);
-		if (field[y][x].role) return field[y][x].role;
+		if (field[y][x].role.length !== 0) return field[y][x].role;
 		return null;
 	};
 
@@ -54,7 +48,7 @@ export class Cell {
 		field: Field,
 		role: CellRole
 	): ICoords[] | null => {
-		let result: ICoords[] = [];
+		const result: ICoords[] = [];
 		field.forEach((row, indexRow) => {
 			row.forEach((cell, indexCell) => {
 				if (cell.role === role) {

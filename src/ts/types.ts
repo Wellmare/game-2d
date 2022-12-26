@@ -1,19 +1,13 @@
 export interface ICoords {
-	x: number;
-	y: number;
+	x: number
+	y: number
 }
 
-export type Field = Array<Array<{role: CellRole }>>;
+export type Field = Array<Array<{ role: CellRole }>>;
 
 export interface ILevel {
-	level: number;
-	// size: {
-	// 	rows: number;
-	// 	cells: number;
-	// };
-	// spawnCoords: ICoords;
-	// finishCoords: ICoords;
-	field: Field;
+	levelName: string
+	field: Field
 }
 
 export const enum Selectors {
@@ -56,12 +50,8 @@ export const enum CellRole {
 	WALL = 'wall'
 }
 export interface ISetLevelProps {
-	levelNumber: number;
-	// rows: number;
-	// cells: number;
-	// finishCoords: ICoords;
-	// spawnCoords: ICoords;
-	onSubmit: () => void;
-	playerCoords: ICoords;
-	field: Field;
+	levelName: string
+	onSubmit: () => void
+	playerCoords: ICoords
+	field: Field
 }
