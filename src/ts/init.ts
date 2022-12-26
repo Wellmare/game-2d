@@ -1,7 +1,9 @@
 // import isMobile from '../../node_modules/ismobilejs/types/isMobile';
 // @ts-ignore
 import isMobileFunc from 'ismobilejs';
-import { renderCurrentLevel } from './index';
+import { finishModal, finishModalNode, renderCurrentLevel } from './index';
+import Level from './Level';
+import { FinishModalSelectors } from './types';
 
 export let isMobile: boolean;
 
@@ -13,5 +15,20 @@ export const init = () => {
 	});
 	isMobile = isMobileResponse.any;
 
-    renderCurrentLevel()
+	renderCurrentLevel();
+
+	finishModalNode
+		.querySelector(FinishModalSelectors.SUBMIT_BTN)!
+		.addEventListener(`click`, () => {
+			finishModal.hide();
+			// Level.destroyLevel();
+			Level.onSubmit();
+		});
+	finishModalNode
+		.querySelector(FinishModalSelectors.RETRY_BTN)!
+		.addEventListener(`click`, () => {
+			finishModal.hide();
+			// Level.destroyLevel();
+			renderCurrentLevel()
+		});
 };
