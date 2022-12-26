@@ -26,7 +26,8 @@ export const enum FinishModalSelectors {
 }
 
 export const enum EndGameModalSelectors {
-	MODAL = '#game-end-modal'
+	MODAL = '#game-end-modal',
+	RETRY_GAME_BUTTON = '#retry-game'
 }
 
 export const enum ControlsSelectors {

@@ -2,7 +2,7 @@ import { Modal } from 'bootstrap';
 
 import '../css/index.css';
 import { init } from './init';
-import Level from './Level';
+import Level, { gameNode } from './Level';
 import { levels } from './levels';
 import { EndGameModalSelectors, FinishModalSelectors } from './types';
 
@@ -10,14 +10,14 @@ export const finishModalNode = document.querySelector(
 	FinishModalSelectors.MODAL
 )!;
 export const finishModal = new Modal(FinishModalSelectors.MODAL);
-const endGameModal = new Modal(EndGameModalSelectors.MODAL);
+export const endGameModal = new Modal(EndGameModalSelectors.MODAL);
 
 let levelIndex = 0;
 
 init();
 
 export function renderCurrentLevel(): void {
-	debugger
+	debugger;
 	const currentLevel = levels[levelIndex];
 
 	if (currentLevel !== undefined) {
@@ -36,9 +36,16 @@ export function renderCurrentLevel(): void {
 		// 	level,
 		// 	retryLevel
 		// );
-		Level.setLevel(level, rows, cells, finishCoords, spawnCoords, nextLevel)
+		Level.setLevel(
+			level,
+			rows,
+			cells,
+			finishCoords,
+			spawnCoords,
+			nextLevel
+		);
 	} else {
-		endGameModal.show();
+		endGame()
 	}
 }
 
@@ -48,9 +55,18 @@ function nextLevel(): void {
 		renderCurrentLevel();
 	}
 }
-// function retryLevel() {
-// 	if (instance.levelNumber === levelIndex + 1) {
-// 		// renderCurrentLevel();
-// 		instance.retry()
-// 	}
-// }
+
+function retryGame() {
+	levelIndex = 0;
+	renderCurrentLevel();
+}
+function endGame() {
+	gameNode.innerHTML = ''
+	endGameModal.show();
+	document
+		.querySelector(EndGameModalSelectors.RETRY_GAME_BUTTON)!
+		.addEventListener('click', () => {
+			retryGame();
+			endGameModal.hide()
+		});
+}

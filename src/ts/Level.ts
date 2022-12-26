@@ -5,7 +5,7 @@ import { finishModal, finishModalNode } from './index';
 import { FinishModalSelectors, ICoords, Selectors } from './types';
 import { equateCoords } from './utils';
 
-const gameNode = document.querySelector(Selectors.GAME)!;
+export const gameNode = document.querySelector(Selectors.GAME)!;
 
 export default class Level {
 	static readonly gameCells: Array<Array<Cell>> = [];
@@ -45,7 +45,7 @@ export default class Level {
 		cells: number,
 		finishCoords: ICoords,
 		spawnCoords: ICoords,
-		onSubmit: () => void,
+		onSubmit: () => void
 		// onRetry: () => {}
 	): void => {
 		Level.levelNumber = levelNumber;
@@ -54,7 +54,7 @@ export default class Level {
 		Level.finishCoords = finishCoords;
 		Level.spawnCoords = spawnCoords;
 		Level.onSubmit = onSubmit;
-		Level.currentCoords = Object.assign({}, spawnCoords)
+		Level.currentCoords = Object.assign({}, spawnCoords);
 		// Level.onRetry = onRetry;
 
 		this.init();
@@ -62,7 +62,7 @@ export default class Level {
 
 	static init = (): void => {
 		gameNode.innerHTML = ``;
-		Level.isFinished = false
+		Level.isFinished = false;
 
 		Level.createField();
 		document.querySelector(Selectors.CURRENT_LEVEL_SPAN)!.textContent =
@@ -74,7 +74,6 @@ export default class Level {
 			Level.currentCoords,
 			Level.render
 		);
-	
 	};
 
 	static createField = (): void => {
@@ -117,23 +116,14 @@ export default class Level {
 			FinishModalSelectors.LEVEL_SPAN
 		)!.textContent = Level.levelNumber.toString();
 
-		
-
-		// finishModalNode
-		// 	.querySelector(FinishModalSelectors.RETRY_BTN)!
-		// 	.addEventListener(`click`, () => {
-		// 		finishModal.hide();
-		// 		// Level.onRetry();
-		// 	});
-
 		Level.isFinished = true;
 		finishModal.show();
 	};
 
-	// static destroyLevel = (): void => {
-	// 	gameNode.innerHTML = ``;
-	// 	Level.controls.disableControls();
-	// };
+	static destroyLevel = (): void => {
+		gameNode.innerHTML = ``;
+		Level.controls.disableControls();
+	};
 
 	// retry = () => {
 	// 	// this.render()
