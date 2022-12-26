@@ -27,29 +27,30 @@ export function renderCurrentLevel(): void {
 		const finishCoords = currentLevel.finishCoords;
 		const level = currentLevel.level;
 
-		new Level(
-			rows,
-			cells,
-			finishCoords,
-			spawnCoords,
-			nextLevel,
-			level,
-			retryLevel
-		);
+		// new Level(
+		// 	rows,
+		// 	cells,
+		// 	finishCoords,
+		// 	spawnCoords,
+		// 	nextLevel,
+		// 	level,
+		// 	retryLevel
+		// );
+		Level.setLevel(level, rows, cells, finishCoords, spawnCoords, nextLevel)
 	} else {
 		endGameModal.show();
 	}
 }
 
-function nextLevel(instance: Level): void {
-	if (instance.levelNumber === levelIndex + 1) {
+function nextLevel(): void {
+	if (Level.levelNumber === levelIndex + 1) {
 		levelIndex++;
 		renderCurrentLevel();
 	}
 }
-function retryLevel(instance: Level) {
-	if (instance.levelNumber === levelIndex + 1) {
-		// renderCurrentLevel();
-		instance.retry()
-	}
-}
+// function retryLevel() {
+// 	if (instance.levelNumber === levelIndex + 1) {
+// 		// renderCurrentLevel();
+// 		instance.retry()
+// 	}
+// }
