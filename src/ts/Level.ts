@@ -8,7 +8,7 @@ import { equateCoords } from './utils';
 const gameNode = document.querySelector(Selectors.GAME)!;
 
 export default class Level {
-	static readonly gameCells: Array<Array<Cell>> = [];
+	static readonly gameCells: Cell[][] = [];
 	static currentCoords: ICoords;
 
 	static isFinished = false;
@@ -45,7 +45,7 @@ export default class Level {
 		cells: number,
 		finishCoords: ICoords,
 		spawnCoords: ICoords,
-		onSubmit: () => void,
+		onSubmit: () => void
 		// onRetry: () => {}
 	): void => {
 		Level.levelNumber = levelNumber;
@@ -54,15 +54,15 @@ export default class Level {
 		Level.finishCoords = finishCoords;
 		Level.spawnCoords = spawnCoords;
 		Level.onSubmit = onSubmit;
-		Level.currentCoords = Object.assign({}, spawnCoords)
+		Level.currentCoords = Object.assign({}, spawnCoords);
 		// Level.onRetry = onRetry;
 
 		this.init();
 	};
 
 	static init = (): void => {
-		gameNode.innerHTML = ``;
-		Level.isFinished = false
+		gameNode.innerHTML = '';
+		Level.isFinished = false;
 
 		Level.createField();
 		document.querySelector(Selectors.CURRENT_LEVEL_SPAN)!.textContent =
@@ -74,7 +74,6 @@ export default class Level {
 			Level.currentCoords,
 			Level.render
 		);
-	
 	};
 
 	static createField = (): void => {
@@ -82,7 +81,7 @@ export default class Level {
 			const rowEl = document.createElement('div');
 
 			rowEl.className = 'game-row';
-			const rowCells: Array<Cell> = [];
+			const rowCells: Cell[] = [];
 
 			for (let cell = 0; cell < Level.cells; cell++) {
 				const cellInstanse = new Cell(
@@ -116,8 +115,6 @@ export default class Level {
 		finishModalNode.querySelector(
 			FinishModalSelectors.LEVEL_SPAN
 		)!.textContent = Level.levelNumber.toString();
-
-		
 
 		// finishModalNode
 		// 	.querySelector(FinishModalSelectors.RETRY_BTN)!
