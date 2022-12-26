@@ -14,6 +14,10 @@ module.exports = {
 			{
 				test: /\.css$/i,
 				use: [MiniCssExtractPlugin.loader, 'css-loader']
+			},
+			{
+				test: /\.(png|svg|jpg|jpeg|gif)$/i,
+				type: 'asset/resource',
 			}
 		]
 	},
@@ -24,5 +28,8 @@ module.exports = {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'dist')
 	},
-	plugins: [new HtmlWebpackPlugin({template: 'src/index.html'}), new MiniCssExtractPlugin()]
+	plugins: [
+		new HtmlWebpackPlugin({ template: 'src/index.html' }),
+		new MiniCssExtractPlugin()
+	]
 };
