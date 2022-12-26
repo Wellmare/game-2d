@@ -1,16 +1,16 @@
 export interface ICoords {
-	x: number
-	y: number
+	x: number;
+	y: number;
 }
 
 export interface ILevel {
-	level: number
+	level: number;
 	size: {
-		rows: number
-		cells: number
-	}
-	spawnCoords: ICoords
-	finishCoords: ICoords
+		rows: number;
+		cells: number;
+	};
+	spawnCoords: ICoords;
+	finishCoords: ICoords;
 }
 
 export const enum Selectors {

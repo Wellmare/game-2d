@@ -4,7 +4,7 @@ import { ControlsSelectors, ICoords, Sides } from './types';
 export class Controls {
 	private isDisabled = false;
 
-	constructor (
+	constructor(
 		private readonly rows: number,
 		private readonly cells: number,
 		private readonly currentCoords: ICoords,
@@ -13,11 +13,11 @@ export class Controls {
 		if (isMobile) {
             document.querySelector(ControlsSelectors.CONTROLS_HINT)!.classList.add('d-none');
             document.querySelector(ControlsSelectors.MOBILE_CONTROLS)!.classList.remove('d-none');
-            this.onMobileInit();
+			this.onMobileInit();
 		} else {
             document.querySelector(ControlsSelectors.CONTROLS_HINT)!.classList.remove('d-none');
             document.querySelector(ControlsSelectors.MOBILE_CONTROLS)!.classList.add('d-none');
-            document.addEventListener('keydown', this.onKeyDown);
+			document.addEventListener('keydown', this.onKeyDown);
 		}
 	}
 
@@ -33,18 +33,18 @@ export class Controls {
 		}
 
 		switch (key) {
-		case 'ArrowUp':
-			this.movePlayer(Sides.UP);
-			break;
-		case 'ArrowDown':
-			this.movePlayer(Sides.DOWN);
-			break;
-		case 'ArrowLeft':
-			this.movePlayer(Sides.LEFT);
-			break;
-		case 'ArrowRight':
-			this.movePlayer(Sides.RIGHT);
-			break;
+			case 'ArrowUp':
+				this.movePlayer(Sides.UP);
+				break;
+			case 'ArrowDown':
+				this.movePlayer(Sides.DOWN);
+				break;
+			case 'ArrowLeft':
+				this.movePlayer(Sides.LEFT);
+				break;
+			case 'ArrowRight':
+				this.movePlayer(Sides.RIGHT);
+				break;
 		}
 	};
 
@@ -55,26 +55,26 @@ export class Controls {
 		const MAX_CELL_INDEX = this.cells - 1;
 
 		switch (side) {
-		case Sides.UP:
-			if (this.currentCoords.y - 1 >= 0) {
-				this.currentCoords.y -= 1;
-			}
-			break;
-		case Sides.DOWN:
-			if (this.currentCoords.y + 1 <= MAX_ROW_INDEX) {
-				this.currentCoords.y += 1;
-			}
-			break;
-		case Sides.LEFT:
-			if (this.currentCoords.x - 1 >= 0) {
-				this.currentCoords.x -= 1;
-			}
-			break;
-		case Sides.RIGHT:
-			if (this.currentCoords.x + 1 <= MAX_CELL_INDEX) {
-				this.currentCoords.x += 1;
-			}
-			break;
+			case Sides.UP:
+				if (this.currentCoords.y - 1 >= 0) {
+					this.currentCoords.y -= 1;
+				}
+				break;
+			case Sides.DOWN:
+				if (this.currentCoords.y + 1 <= MAX_ROW_INDEX) {
+					this.currentCoords.y += 1;
+				}
+				break;
+			case Sides.LEFT:
+				if (this.currentCoords.x - 1 >= 0) {
+					this.currentCoords.x -= 1;
+				}
+				break;
+			case Sides.RIGHT:
+				if (this.currentCoords.x + 1 <= MAX_CELL_INDEX) {
+					this.currentCoords.x += 1;
+				}
+				break;
 		}
 		this.render();
 	};
@@ -82,16 +82,16 @@ export class Controls {
 	onMobileInit = (): void => {
 		document
 			.querySelector(ControlsSelectors.UP_BUTTON)!
-			.addEventListener('click', () => this.movePlayer(Sides.UP));
+			.addEventListener(`click`, () => this.movePlayer(Sides.UP));
 		document
 			.querySelector(ControlsSelectors.DOWN_BUTTON)!
-			.addEventListener('click', () => this.movePlayer(Sides.DOWN));
+			.addEventListener(`click`, () => this.movePlayer(Sides.DOWN));
 		document
 			.querySelector(ControlsSelectors.LEFT_BUTTON)!
-			.addEventListener('click', () => this.movePlayer(Sides.LEFT));
+			.addEventListener(`click`, () => this.movePlayer(Sides.LEFT));
 		document
 			.querySelector(ControlsSelectors.RIGHT_BUTTON)!
-			.addEventListener('click', () => this.movePlayer(Sides.RIGHT));
+			.addEventListener(`click`, () => this.movePlayer(Sides.RIGHT));
 	};
 
 	disableControls = (): void => {

@@ -1,5 +1,5 @@
 // import isMobile from '../../node_modules/ismobilejs/types/isMobile';
-// @ts-expect-error
+// @ts-ignore
 import isMobileFunc from 'ismobilejs';
 import { finishModal, finishModalNode, renderCurrentLevel } from './index';
 import Level from './Level';
@@ -19,16 +19,16 @@ export const init = () => {
 
 	finishModalNode
 		.querySelector(FinishModalSelectors.SUBMIT_BTN)!
-		.addEventListener('click', () => {
+		.addEventListener(`click`, () => {
 			finishModal.hide();
 			// Level.destroyLevel();
 			Level.onSubmit();
 		});
 	finishModalNode
 		.querySelector(FinishModalSelectors.RETRY_BTN)!
-		.addEventListener('click', () => {
+		.addEventListener(`click`, () => {
 			finishModal.hide();
 			// Level.destroyLevel();
-			renderCurrentLevel();
+			renderCurrentLevel()
 		});
 };
