@@ -16,8 +16,8 @@ let levelIndex = 0;
 
 init();
 
-export function renderCurrentLevel(): void {
-	debugger
+export function renderCurrentLevel (): void {
+	debugger;
 	const currentLevel = levels[levelIndex];
 
 	if (currentLevel !== undefined) {
@@ -36,13 +36,13 @@ export function renderCurrentLevel(): void {
 		// 	level,
 		// 	retryLevel
 		// );
-		Level.setLevel(level, rows, cells, finishCoords, spawnCoords, nextLevel)
+		Level.setLevel(level, rows, cells, finishCoords, spawnCoords, nextLevel);
 	} else {
 		endGameModal.show();
 	}
 }
 
-function nextLevel(): void {
+function nextLevel (): void {
 	if (Level.levelNumber === levelIndex + 1) {
 		levelIndex++;
 		renderCurrentLevel();

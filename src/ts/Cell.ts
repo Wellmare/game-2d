@@ -9,7 +9,7 @@ export class Cell {
 	// private isPlayer: boolean = false;
 	// private isWall: boolean = false;
 
-	constructor(
+	constructor (
 		private readonly cellCoords: ICoords,
 		private readonly currentCoords: ICoords,
 		private readonly finishCoords: ICoords
@@ -18,9 +18,9 @@ export class Cell {
 	}
 
 	render = (): HTMLDivElement => {
-		this.type = CellTypes.EMPTY
-		if (equateCoords(this.currentCoords, this.cellCoords)) this.type = CellTypes.PLAYER
-		if (equateCoords(this.finishCoords, this.cellCoords)) this.type = CellTypes.FINISH
+		this.type = CellTypes.EMPTY;
+		if (equateCoords(this.currentCoords, this.cellCoords)) this.type = CellTypes.PLAYER;
+		if (equateCoords(this.finishCoords, this.cellCoords)) this.type = CellTypes.FINISH;
 
 		this.clearClasses();
 
@@ -33,7 +33,7 @@ export class Cell {
 		return this.cellElement;
 	};
 
-	clearClasses = () => {
+	clearClasses = (): void => {
 		this.cellElement.classList.remove('player');
 		this.cellElement.classList.remove('finish');
 	};
