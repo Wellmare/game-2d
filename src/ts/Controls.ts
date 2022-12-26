@@ -7,7 +7,7 @@ export class Controls {
 	constructor(
 		private readonly rows: number,
 		private readonly cells: number,
-		private currentCoords: ICoords,
+		private readonly currentCoords: ICoords,
 		private readonly render: () => void
 	) {
 		if (isMobile) {

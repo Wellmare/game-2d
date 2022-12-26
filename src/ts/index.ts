@@ -17,6 +17,7 @@ let levelIndex = 0;
 init();
 
 export function renderCurrentLevel(): void {
+	debugger
 	const currentLevel = levels[levelIndex];
 
 	if (currentLevel !== undefined) {
@@ -48,6 +49,7 @@ function nextLevel(instance: Level): void {
 }
 function retryLevel(instance: Level) {
 	if (instance.levelNumber === levelIndex + 1) {
-		renderCurrentLevel();
+		// renderCurrentLevel();
+		instance.retry()
 	}
 }
