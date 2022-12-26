@@ -83,7 +83,7 @@ export const renderLevel = (): void => {
 		Cell.getCellTypeByCoords(playerCoords.y, playerCoords.x, field) ===
 		CellRole.FINISH
 	) {
-		if (isFinished) {
+		if (!isFinished) {
 			finish();
 		}
 	}
