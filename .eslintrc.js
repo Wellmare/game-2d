@@ -24,6 +24,7 @@ module.exports = {
 		semi: 0,
 		'@typescript-eslint/indent': 'off',
 		'@typescript-eslint/semi': [2, 'always'],
-		'@typescript-eslint/no-non-null-assertion': 'off'
+		'@typescript-eslint/no-non-null-assertion': 'off',
+		'no-console': 1
 	}
 };
