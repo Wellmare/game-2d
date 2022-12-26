@@ -5,7 +5,9 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "webpack --watch --mode development",
-		"build": "webpack --mode production"
+		"build": "webpack --mode production",
+		"lint:ts": "eslint src/.",
+		"lint:ts:fix": "eslint src/. --fix"
 	},
 	"keywords": [],
 	"author": "",
@@ -14,14 +16,19 @@
 		"@types/bootstrap": "^5.2.6",
 		"@types/ismobilejs": "^1.0.1",
 		"bootstrap": "^5.2.3",
+		"eslint-config-standard-with-typescript": "^24.0.0",
 		"html-webpack-plugin": "^5.5.0",
 		"ismobilejs": "^1.1.1"
 	},
 	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^5.47.0",
+		"@typescript-eslint/parser": "^5.47.0",
 		"css-loader": "^6.7.3",
+		"eslint": "^8.30.0",
 		"mini-css-extract-plugin": "^2.7.2",
 		"style-loader": "^3.3.1",
 		"ts-loader": "^9.4.2",
+		"typescript": "^4.9.4",
 		"webpack": "^5.75.0",
 		"webpack-cli": "^5.0.1"
 	}
