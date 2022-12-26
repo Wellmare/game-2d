@@ -3,6 +3,7 @@ import { Controls } from './Controls';
 import { finishModal, finishModalNode } from './index';
 
 import { FinishModalSelectors, ICoords, Selectors } from './types';
+import { equateCoords } from './utils';
 
 const gameNode = document.querySelector(Selectors.GAME)!;
 
@@ -21,12 +22,14 @@ export default class Level {
 		public levelNumber: number,
 		private readonly onRetry: (instance: Level) => void
 	) {
-		this.currentCoords = spawnCoords;
+		// this.currentCoords.x = this.spawnCoords.x;
+		// this.currentCoords.y = this.spawnCoords.y;
+		this.currentCoords = Object.assign({}, this.spawnCoords)
 		this.init();
-		
 	}
 
 	init = (): void => {
+		debugger
 		this.createField();
 		document.querySelector(Selectors.CURRENT_LEVEL_SPAN)!.textContent =
 			this.levelNumber.toString();
@@ -68,9 +71,9 @@ export default class Level {
 			});
 		});
 		if (
-			this.currentCoords.y === this.finishCoords.y &&
-			this.currentCoords.x === this.finishCoords.x
+			equateCoords(this.currentCoords, this.finishCoords)
 		) {
+			console.log('finish');
 			if (!this.isFinished) {
 				this.finish();
 			}
@@ -94,7 +97,6 @@ export default class Level {
 			.querySelector(FinishModalSelectors.RETRY_BTN)!
 			.addEventListener(`click`, () => {
 				finishModal.hide();
-				this.destroyLevel();
 				this.onRetry(this);
 			});
 
@@ -106,4 +108,14 @@ export default class Level {
 		gameNode.innerHTML = ``;
 		this.controls.disableControls();
 	};
+
+	retry = () => {
+		// this.render()
+		this.destroyLevel()
+		this.isFinished = false
+		this.init()
+		this.currentCoords.x = this.spawnCoords.x
+		this.currentCoords.y = this.spawnCoords.y
+		this.render()
+	}
 }

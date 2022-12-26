@@ -1,15 +1,16 @@
 import { CellTypes, ICoords } from './types';
+import { equateCoords } from './utils';
 
 export class Cell {
 	public cellElement: HTMLDivElement = document.createElement('div');
 	private type: CellTypes = CellTypes.EMPTY;
 
-	private isFinish: boolean = false;
-	private isPlayer: boolean = false;
-	private isWall: boolean = false;
+	// private isFinish: boolean = false;
+	// private isPlayer: boolean = false;
+	// private isWall: boolean = false;
 
 	constructor(
-		private cellCoords: ICoords,
+		private readonly cellCoords: ICoords,
 		private readonly currentCoords: ICoords,
 		private readonly finishCoords: ICoords
 	) {
@@ -17,19 +18,16 @@ export class Cell {
 	}
 
 	render = (): HTMLDivElement => {
-		this.isPlayer =
-			this.currentCoords.y === this.cellCoords.y &&
-			this.currentCoords.x === this.cellCoords.x;
-		this.isFinish =
-			this.finishCoords.y === this.cellCoords.y &&
-			this.finishCoords.x === this.cellCoords.x;
+		this.type = CellTypes.EMPTY
+		if (equateCoords(this.currentCoords, this.cellCoords)) this.type = CellTypes.PLAYER
+		if (equateCoords(this.finishCoords, this.cellCoords)) this.type = CellTypes.FINISH
 
 		this.clearClasses();
 
-		if (this.isPlayer) {
+		if (this.type === CellTypes.PLAYER) {
 			this.cellElement.classList.add('player');
 		}
-		if (this.isFinish) {
+		if (this.type === CellTypes.FINISH) {
 			this.cellElement.classList.add('finish');
 		}
 		return this.cellElement;
