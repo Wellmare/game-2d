@@ -59,7 +59,6 @@ export class Game {
 				throw new Error('Level not defined');
 			}
 		} catch (e) {
-			console.log('end');
 			this.onEndGame();
 		}
 	};

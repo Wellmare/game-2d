@@ -6,8 +6,6 @@ export class Controls {
 	private isDisabled = false;
 
 	constructor (
-		// private readonly rows: number,
-		// private readonly cells: number,
 		private readonly playerCoords: ICoords,
 		private readonly render: () => void,
 		private readonly field: Field
@@ -29,7 +27,6 @@ export class Controls {
 				.classList.add('d-none');
 			document.addEventListener('keydown', this.onKeyDown);
 		}
-		console.log(this.field);
 	}
 
 	onKeyDown = (e: KeyboardEvent): void => {
